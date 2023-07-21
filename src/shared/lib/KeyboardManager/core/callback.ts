@@ -8,6 +8,7 @@ type RemoveParams = {
 };
 
 const removeCallback = ({ queue, wrappedCallback }: RemoveParams) => {
+
   const index = queue.findIndex(
     (queueCallback) => queueCallback === wrappedCallback
   );
@@ -30,11 +31,12 @@ export const addCallback = ({ key, wrappedCallback }: AddParams) => {
   const needAddEventListener = allQueuesAreEmpty();
 
   const queue = getOrCreateQueue(key);
+
   queue.push(wrappedCallback);
 
   if (needAddEventListener) {
     addEventListener();
   }
-
+  console.log(queue)
   return () => removeCallback({ queue, wrappedCallback });
 };
