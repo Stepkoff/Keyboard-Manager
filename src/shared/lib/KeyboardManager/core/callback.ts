@@ -20,6 +20,7 @@ const removeCallback = ({ queue, wrappedCallback }: RemoveParams) => {
   if (allQueuesAreEmpty()) {
     removeEventListener();
   }
+  console.log('remove callback', queue)
 };
 
 type AddParams = {
@@ -37,6 +38,6 @@ export const addCallback = ({ key, wrappedCallback }: AddParams) => {
   if (needAddEventListener) {
     addEventListener();
   }
-  console.log(queue)
+  console.log('add callback', queue)
   return () => removeCallback({ queue, wrappedCallback });
 };
