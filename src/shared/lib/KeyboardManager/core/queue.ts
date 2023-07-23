@@ -12,13 +12,10 @@ export const getQueue = (key: Key): Queue | undefined => {
 
 export const getOrCreateQueue = (key: Key): Queue => {
   const queue = getQueue(key);
-
   if (queue) {
     return queue;
   }
-
   const newQueue: Queue = [];
   keyToQueue[key] = newQueue;
-
   return newQueue;
 };
