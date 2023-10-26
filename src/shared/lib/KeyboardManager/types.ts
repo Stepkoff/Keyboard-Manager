@@ -1,4 +1,4 @@
-import {KeyboardEvent, MutableRefObject} from "react";
+import {MutableRefObject} from "react";
 
 export type Key = KeyboardEvent['key'];
 export type Callback = (event: KeyboardEvent) => void;

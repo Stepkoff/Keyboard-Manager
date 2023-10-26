@@ -6,30 +6,34 @@ type RemoveParams = {
   queue: Queue;
   wrappedCallback: WrappedCallbackRef;
 };
+
 const removeCallback = ({ queue, wrappedCallback }: RemoveParams) => {
-  const index = queue.findIndex(
-    (queueCallback) => queueCallback === wrappedCallback
-  );
+  const index = queue.findIndex((queueCallback) => queueCallback === wrappedCallback);
+
   if (index > -1) {
     queue.splice(index, 1);
   }
+
   if (allQueuesAreEmpty()) {
     removeEventListener();
   }
-  console.log('remove callback', queue)
 };
 
 type AddParams = {
   key: Key;
   wrappedCallback: WrappedCallbackRef;
+  insertPosition: number;
 };
-export const addCallback = ({ key, wrappedCallback }: AddParams) => {
+
+export const addCallback = ({ key, wrappedCallback, insertPosition }: AddParams) => {
   const needAddEventListener = allQueuesAreEmpty();
+
   const queue = getOrCreateQueue(key);
-  queue.push(wrappedCallback);
+  queue.splice(insertPosition, 0, wrappedCallback);
+
   if (needAddEventListener) {
     addEventListener();
   }
-  console.log('add callback', queue)
+
   return () => removeCallback({ queue, wrappedCallback });
 };

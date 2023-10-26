@@ -1,6 +1,6 @@
-import {useCallback, useRef, useSyncExternalStore} from 'react';
+import { useEffect, useRef } from 'react';
 
-import { addCallback } from '../core';
+import { addCallback, getInsertPosition } from '../core';
 import { Callback, WrappedCallback, Key } from '../types';
 
 type Props = {
@@ -12,23 +12,19 @@ type Props = {
 export const useKeyboard = ({ key, callback, disabled = false }: Props) => {
   const wrappedCallback = useRef<WrappedCallback>(null);
 
-  console.log('render')
   wrappedCallback.current = { callback };
 
+  const insertPosition = getInsertPosition(key);
 
-  const subscribe = useCallback(() => {
-    if(disabled) return () => null
-    console.log('sub')
+  useEffect(() => {
+    if (disabled) return () => null;
+
     const removeCallback = addCallback({
       key,
-      wrappedCallback
-    })
-    return () => {
-      console.log('unsub')
-      removeCallback()
-    }
-  }, [key, disabled])
+      wrappedCallback,
+      insertPosition,
+    });
 
-
-  useSyncExternalStore(subscribe, () => null)
+    return removeCallback;
+  }, [key, disabled]);
 };
